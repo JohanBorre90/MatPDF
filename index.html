@@ -324,7 +324,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 let pdfDoc          = null;
-let bookMode        = false;
+let bookMode        = true;
 let userScale       = 1.0;    // default 100%
 let baseScale       = 1;
 let renderedAtScale = 1.0;    // scale used for current canvases
@@ -535,7 +535,7 @@ pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
   pdfDoc = doc;
   pageInfo.textContent = '/ ' + doc.numPages;
   pageInput.max = doc.numPages;
-  btnSingle.classList.add('active');
+  btnBook.classList.add('active');
   const hash = window.location.hash.match(/page=(\d+)/);
   const start = hash ? parseInt(hash[1]) : 1;
   currentPage = start;
