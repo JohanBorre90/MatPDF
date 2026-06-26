@@ -564,9 +564,6 @@ function updateActiveLinks(page) {
   });
   bestEls.forEach(el => {
     el.classList.add('active');
-    // Auto-expand the parent chapter if a section is active
-    const item = el.closest('.chapter-item');
-    if (item) item.classList.add('open');
     el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   });
 }
