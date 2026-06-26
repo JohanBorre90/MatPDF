@@ -72,7 +72,10 @@
     #toolbar input[type=number] {
       width: 52px; background: #1a1a1a; border: 1px solid #444;
       color: #ddd; padding: 5px 7px; border-radius: 4px; font-size: 13px; text-align: center;
+      -moz-appearance: textfield;
     }
+    #toolbar input[type=number]::-webkit-inner-spin-button,
+    #toolbar input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
     #page-info { font-size: 13px; color: #666; }
     .sep { width: 1px; background: #444; align-self: stretch; margin: 0 2px; }
     #zoom-controls { margin-left: auto; display: flex; align-items: center; gap: 6px; }
