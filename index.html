@@ -588,8 +588,10 @@ document.getElementById('btn-zoom-out').addEventListener('click', () => {
   userScale = Math.max((userScale || effectiveScale()) - 0.15, 0.2);
   initViewer(currentPage);
 });
-document.getElementById('btn-zoom-fit').addEventListener('click', () => {
-  userScale = null; initViewer(currentPage); // null = fit width
+document.getElementById('btn-zoom-fit').addEventListener('click', async () => {
+  const vp = (await pdfDoc.getPage(1)).getViewport({ scale: 1 });
+  userScale = (container.clientHeight - 32) / vp.height;
+  initViewer(currentPage);
 });
 
 // Pinch-to-zoom (touchpad) — instant CSS transform, re-render on release
