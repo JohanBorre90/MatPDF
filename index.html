@@ -308,12 +308,13 @@ toc.forEach(ch => {
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-let pdfDoc      = null;
-let bookMode    = false;
-let userScale   = 1.0;    // default 100%
-let baseScale   = 1;
-let currentPage = 1;
-let observer    = null;
+let pdfDoc          = null;
+let bookMode        = false;
+let userScale       = 1.0;    // default 100%
+let baseScale       = 1;
+let renderedAtScale = 1.0;    // scale used for current canvases
+let currentPage     = 1;
+let observer        = null;
 const rendered  = new Set();
 
 const container  = document.getElementById('canvas-container');
@@ -344,6 +345,7 @@ async function initViewer(scrollToPage) {
   rendered.clear();
   if (observer) observer.disconnect();
   wrapper.innerHTML = '';
+  wrapper.style.transform = '';
 
   // Determine scale from page 1
   const p1  = await pdfDoc.getPage(1);
@@ -356,6 +358,7 @@ async function initViewer(scrollToPage) {
   const W = Math.round(scaled.width);
   const H = Math.round(scaled.height);
 
+  renderedAtScale = scale;
   zoomLabel.textContent = Math.round(scale * 100) + '%';
 
   // Create canvas elements
@@ -554,17 +557,24 @@ document.getElementById('btn-zoom-fit').addEventListener('click', () => {
   userScale = null; initViewer(currentPage); // null = fit width
 });
 
-// Pinch-to-zoom (touchpad)
+// Pinch-to-zoom (touchpad) — instant CSS transform, re-render on release
 let zoomTimer;
 container.addEventListener('wheel', e => {
   if (!e.ctrlKey) return;
   e.preventDefault();
-  const current = userScale !== null ? userScale : effectiveScale();
-  const factor  = e.deltaY < 0 ? 1.06 : 0.94;
-  userScale = Math.min(Math.max(current * factor, 0.2), 4.0);
+  const factor = e.deltaY < 0 ? 1.06 : 0.94;
+  userScale = Math.min(Math.max((userScale || renderedAtScale) * factor, 0.2), 4.0);
+
+  // Instant visual zoom centered on the viewport midpoint
+  const cssScale = userScale / renderedAtScale;
+  const midY = container.scrollTop + container.clientHeight / 2;
+  wrapper.style.transformOrigin = `50% ${midY}px`;
+  wrapper.style.transform = `scale(${cssScale})`;
   zoomLabel.textContent = Math.round(userScale * 100) + '%';
+
+  // Re-render at full quality once pinch stops
   clearTimeout(zoomTimer);
-  zoomTimer = setTimeout(() => initViewer(currentPage), 200);
+  zoomTimer = setTimeout(() => initViewer(currentPage), 400);
 }, { passive: false });
 
 // Resize
