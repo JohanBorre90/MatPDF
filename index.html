@@ -551,6 +551,19 @@ document.getElementById('btn-zoom-fit').addEventListener('click', () => {
   userScale = null; initViewer(currentPage); // null = fit width
 });
 
+// Pinch-to-zoom (touchpad)
+let zoomTimer;
+container.addEventListener('wheel', e => {
+  if (!e.ctrlKey) return;
+  e.preventDefault();
+  const current = userScale !== null ? userScale : effectiveScale();
+  const factor  = e.deltaY < 0 ? 1.06 : 0.94;
+  userScale = Math.min(Math.max(current * factor, 0.2), 4.0);
+  zoomLabel.textContent = Math.round(userScale * 100) + '%';
+  clearTimeout(zoomTimer);
+  zoomTimer = setTimeout(() => initViewer(currentPage), 200);
+}, { passive: false });
+
 // Resize
 let resizeTimer;
 window.addEventListener('resize', () => {
