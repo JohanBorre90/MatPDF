@@ -525,16 +525,16 @@ document.addEventListener('keydown', e => {
 // View mode
 btnSingle.addEventListener('click', () => {
   if (!bookMode) return;
+  if (userScale === null) userScale = effectiveScale();
   bookMode = false;
   btnSingle.classList.add('active'); btnBook.classList.remove('active');
-  userScale = null;
   initViewer(currentPage);
 });
 btnBook.addEventListener('click', () => {
   if (bookMode) return;
+  if (userScale === null) userScale = effectiveScale();
   bookMode = true;
   btnBook.classList.add('active'); btnSingle.classList.remove('active');
-  userScale = null;
   initViewer(currentPage);
 });
 
