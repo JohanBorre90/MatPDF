@@ -538,9 +538,15 @@ async function renderAnnotations(canvas, page, vp) {
   canvas.parentElement.appendChild(overlay);
 }
 
+function spreadStart(num) {
+  if (!bookMode || num <= 1) return num;
+  return num % 2 === 0 ? num : num - 1; // venstre side af spread
+}
+
 function goToPage(num) {
   if (!pdfDoc) return;
   num = Math.max(1, Math.min(pdfDoc.numPages, num));
+  if (bookMode) num = spreadStart(num);
   const el = document.getElementById('page-' + num);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -608,15 +614,15 @@ pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
 });
 
 // Navigation
-btnPrev.addEventListener('click', () => goToPage(currentPage - (bookMode ? 2 : 1)));
-btnNext.addEventListener('click', () => goToPage(currentPage + (bookMode ? 2 : 1)));
+btnPrev.addEventListener('click', () => goToPage(spreadStart(currentPage) - (bookMode ? 2 : 1)));
+btnNext.addEventListener('click', () => goToPage(spreadStart(currentPage) + (bookMode ? 2 : 1)));
 pageInput.addEventListener('change', () => goToPage(parseInt(pageInput.value)));
 pageInput.addEventListener('keydown', e => { if (e.key === 'Enter') goToPage(parseInt(pageInput.value)); });
 
 document.addEventListener('keydown', e => {
   if (e.target === pageInput) return;
-  if (e.key === 'ArrowDown'  || e.key === 'ArrowRight') goToPage(currentPage + (bookMode ? 2 : 1));
-  if (e.key === 'ArrowUp'    || e.key === 'ArrowLeft')  goToPage(currentPage - (bookMode ? 2 : 1));
+  if (e.key === 'ArrowDown'  || e.key === 'ArrowRight') goToPage(spreadStart(currentPage) + (bookMode ? 2 : 1));
+  if (e.key === 'ArrowUp'    || e.key === 'ArrowLeft')  goToPage(spreadStart(currentPage) - (bookMode ? 2 : 1));
 });
 
 // View mode
