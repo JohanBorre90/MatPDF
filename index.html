@@ -9,32 +9,21 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      display: flex;
-      height: 100vh;
+      display: flex; height: 100vh;
       font-family: system-ui, sans-serif;
-      background: #1a1a2e;
-      color: #e0e0e0;
-      overflow: hidden;
+      background: #1a1a2e; color: #e0e0e0; overflow: hidden;
     }
 
     /* SIDEBAR */
     #sidebar {
-      width: 300px;
-      min-width: 300px;
-      background: #16213e;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid #0f3460;
-      overflow: hidden;
+      width: 300px; min-width: 300px;
+      background: #16213e; display: flex; flex-direction: column;
+      border-right: 1px solid #0f3460; overflow: hidden;
     }
-
     #sidebar-header {
-      padding: 16px 14px 12px;
-      background: #0f3460;
-      border-bottom: 1px solid #1a4a7a;
-      flex-shrink: 0;
+      padding: 16px 14px 12px; background: #0f3460;
+      border-bottom: 1px solid #1a4a7a; flex-shrink: 0;
     }
-
     #sidebar-header h1 { font-size: 14px; font-weight: 700; color: #e0e0ff; line-height: 1.3; }
     #sidebar-header p  { font-size: 11px; color: #8899bb; margin-top: 3px; }
 
@@ -44,7 +33,6 @@
     #toc::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
 
     .chapter-item { border-bottom: 1px solid #1e2d50; }
-
     .chapter-link {
       display: flex; justify-content: space-between; align-items: center;
       padding: 8px 14px; cursor: pointer; font-size: 12.5px; font-weight: 600;
@@ -56,7 +44,6 @@
     .chapter-link.active .pg { color: #5599cc; }
 
     .section-list { background: #111827; padding: 2px 0 4px; }
-
     .section-link {
       display: flex; justify-content: space-between; align-items: center;
       padding: 5px 14px 5px 24px; cursor: pointer; font-size: 11.5px;
@@ -64,17 +51,16 @@
     }
     .section-link:hover  { background: #1a2d48; color: #aac8e8; }
     .section-link.active { background: #1a3050; color: #7eb8f7; }
-    .section-link .pg    { font-size: 10.5px; color: #445566; font-weight: 400; margin-left: 8px; flex-shrink: 0; }
+    .section-link .pg    { font-size: 10.5px; color: #445566; margin-left: 8px; flex-shrink: 0; }
     .section-link.active .pg { color: #5588aa; }
 
     /* VIEWER */
-    #viewer { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #111; min-width: 0; }
+    #viewer { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 
     #toolbar {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
       padding: 7px 14px; background: #0f0f1a; border-bottom: 1px solid #222; flex-shrink: 0;
     }
-
     #toolbar button {
       background: #1e3a5f; border: 1px solid #2a4f7a; color: #aac4e8;
       padding: 5px 11px; border-radius: 4px; cursor: pointer; font-size: 13px;
@@ -83,28 +69,37 @@
     #toolbar button:hover:not(:disabled) { background: #2a5080; color: #d0e8ff; }
     #toolbar button:disabled { opacity: 0.35; cursor: default; }
     #toolbar button.active { background: #1a5a9f; border-color: #3a8fdf; color: #d0e8ff; }
-
     #toolbar input[type=number] {
       width: 52px; background: #1a1a2e; border: 1px solid #2a4f7a;
       color: #d0e0ff; padding: 5px 7px; border-radius: 4px; font-size: 13px; text-align: center;
     }
-
     #page-info { font-size: 13px; color: #5577aa; }
-    #toolbar .sep { width: 1px; background: #2a4f7a; align-self: stretch; margin: 0 2px; }
+    .sep { width: 1px; background: #2a4f7a; align-self: stretch; margin: 0 2px; }
     #zoom-controls { margin-left: auto; display: flex; align-items: center; gap: 6px; }
     #zoom-controls button { padding: 5px 9px; font-size: 14px; font-weight: bold; }
     #zoom-label { font-size: 12px; color: #7799bb; min-width: 42px; text-align: center; }
 
+    /* SCROLL AREA */
     #canvas-container {
-      flex: 1; overflow: auto; display: flex;
-      justify-content: center; align-items: flex-start;
-      padding: 16px; background: #666;
+      flex: 1; overflow: auto;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 16px; background: #666; gap: 0;
     }
-    #canvas-container::-webkit-scrollbar { width: 8px; height: 8px; }
+    #canvas-container::-webkit-scrollbar { width: 8px; }
     #canvas-container::-webkit-scrollbar-track { background: #555; }
     #canvas-container::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
 
-    #pdf-canvas { display: block; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
+    #pages-wrapper {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+
+    .page-row { display: flex; gap: 4px; }
+
+    .page-row canvas {
+      display: block;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      background: #ccc; /* placeholder before render */
+    }
   </style>
 </head>
 <body>
@@ -134,7 +129,7 @@
     </div>
   </div>
   <div id="canvas-container">
-    <canvas id="pdf-canvas"></canvas>
+    <div id="pages-wrapper"></div>
   </div>
 </div>
 
@@ -263,14 +258,12 @@ const tocEl = document.getElementById('toc');
 toc.forEach(ch => {
   const item = document.createElement('div');
   item.className = 'chapter-item';
-
   const chLink = document.createElement('a');
   chLink.className = 'chapter-link';
   chLink.dataset.page = ch.page;
   chLink.innerHTML = `<span>${ch.chapter}</span><span class="pg">s. ${ch.page}</span>`;
   chLink.addEventListener('click', e => { e.preventDefault(); goToPage(ch.page); });
   item.appendChild(chLink);
-
   if (ch.sections.length > 0) {
     const secList = document.createElement('div');
     secList.className = 'section-list';
@@ -284,110 +277,118 @@ toc.forEach(ch => {
     });
     item.appendChild(secList);
   }
-
   tocEl.appendChild(item);
 });
 
-// PDF.js
+// PDF.js setup
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-let pdfDoc    = null;
+let pdfDoc      = null;
+let bookMode    = false;
+let userScale   = null;   // null = fit width
+let baseScale   = 1;
 let currentPage = 1;
-let bookMode  = false;
-let userScale = null; // null = auto fit
-let rendering = false;
-let pendingPage = null;
+let observer    = null;
+const rendered  = new Set();
 
-const canvas    = document.getElementById('pdf-canvas');
-const ctx       = canvas.getContext('2d');
-const container = document.getElementById('canvas-container');
-const pageInput = document.getElementById('page-input');
-const pageInfo  = document.getElementById('page-info');
-const zoomLabel = document.getElementById('zoom-label');
-const btnPrev   = document.getElementById('btn-prev');
-const btnNext   = document.getElementById('btn-next');
-const btnSingle = document.getElementById('btn-single');
-const btnBook   = document.getElementById('btn-book');
+const container  = document.getElementById('canvas-container');
+const wrapper    = document.getElementById('pages-wrapper');
+const pageInput  = document.getElementById('page-input');
+const pageInfo   = document.getElementById('page-info');
+const zoomLabel  = document.getElementById('zoom-label');
+const btnPrev    = document.getElementById('btn-prev');
+const btnNext    = document.getElementById('btn-next');
+const btnSingle  = document.getElementById('btn-single');
+const btnBook    = document.getElementById('btn-book');
 
-// In book mode, snap to the start of a spread: page 1 alone, then 2-3, 4-5 ...
-function spreadStart(n) {
-  if (!bookMode || n <= 1) return n;
-  return n % 2 === 0 ? n : n - 1; // even pages start a spread
+function effectiveScale() {
+  return userScale !== null ? userScale : baseScale;
 }
 
-async function renderPage(num) {
-  if (rendering) { pendingPage = num; return; }
-  rendering = true;
-
-  num = spreadStart(num);
-  currentPage = num;
-  pageInput.value = num;
-  btnPrev.disabled = num <= 1;
-  history.replaceState(null, '', '#page=' + num);
-  updateActiveLinks(num);
-
-  const page1 = await pdfDoc.getPage(num);
-  const base  = page1.getViewport({ scale: 1 });
-
-  const showTwo = bookMode && num + 1 <= pdfDoc.numPages;
-  const page2   = showTwo ? await pdfDoc.getPage(num + 1) : null;
-
-  const totalW = base.width * (showTwo ? 2 : 1);
-  const availW = container.clientWidth  - 32;
-  const availH = container.clientHeight - 32;
-  const scale  = userScale !== null
-    ? userScale
-    : Math.min(availW / totalW, availH / base.height);
-
-  const vp1 = page1.getViewport({ scale });
-  canvas.width  = showTwo ? Math.round(vp1.width * 2) : vp1.width;
-  canvas.height = vp1.height;
-
-  // Clear canvas (gap between pages in book mode)
-  ctx.fillStyle = '#888';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  await page1.render({ canvasContext: ctx, viewport: vp1 }).promise;
-
-  if (page2) {
-    const vp2 = page2.getViewport({ scale });
-    // Render page2 to offscreen canvas, then draw onto main canvas
-    const off = document.createElement('canvas');
-    off.width  = vp2.width;
-    off.height = vp2.height;
-    await page2.render({ canvasContext: off.getContext('2d'), viewport: vp2 }).promise;
-    ctx.drawImage(off, vp1.width, 0);
+// Build rows: [[1], [2,3], [4,5], ...] for book mode, [[1],[2],...] for single
+function buildRows() {
+  if (!bookMode) return Array.from({ length: pdfDoc.numPages }, (_, i) => [i + 1]);
+  const rows = [[1]];
+  for (let i = 2; i <= pdfDoc.numPages; i += 2) {
+    rows.push(i + 1 <= pdfDoc.numPages ? [i, i + 1] : [i]);
   }
+  return rows;
+}
 
-  btnNext.disabled = bookMode
-    ? num + (showTwo ? 2 : 1) > pdfDoc.numPages
-    : num >= pdfDoc.numPages;
+async function initViewer(scrollToPage) {
+  rendered.clear();
+  if (observer) observer.disconnect();
+  wrapper.innerHTML = '';
+
+  // Determine scale from page 1
+  const p1  = await pdfDoc.getPage(1);
+  const vp1 = p1.getViewport({ scale: 1 });
+  const availW = container.clientWidth - 32;
+  baseScale = availW / (bookMode ? vp1.width * 2 : vp1.width);
+
+  const scale = effectiveScale();
+  const scaled = p1.getViewport({ scale });
+  const W = Math.round(scaled.width);
+  const H = Math.round(scaled.height);
 
   zoomLabel.textContent = Math.round(scale * 100) + '%';
-  rendering = false;
 
-  if (pendingPage !== null) {
-    const p = pendingPage; pendingPage = null; renderPage(p);
-  }
+  // Create canvas elements
+  buildRows().forEach(pages => {
+    const row = document.createElement('div');
+    row.className = 'page-row';
+    pages.forEach(num => {
+      const c = document.createElement('canvas');
+      c.id = 'page-' + num;
+      c.dataset.pageNum = num;
+      c.width  = W;
+      c.height = H;
+      row.appendChild(c);
+    });
+    wrapper.appendChild(row);
+  });
+
+  // Lazy render via IntersectionObserver
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const c   = e.target;
+      const num = parseInt(c.dataset.pageNum);
+      if (rendered.has(num)) return;
+      rendered.add(num);
+      pdfDoc.getPage(num).then(page => {
+        const vp = page.getViewport({ scale: effectiveScale() });
+        c.width  = Math.round(vp.width);
+        c.height = Math.round(vp.height);
+        page.render({ canvasContext: c.getContext('2d'), viewport: vp });
+      });
+    });
+  }, { root: container, rootMargin: '400px 0px' });
+
+  wrapper.querySelectorAll('canvas').forEach(c => observer.observe(c));
+
+  // Scroll to requested page (instant on init)
+  const el = document.getElementById('page-' + scrollToPage);
+  if (el) el.scrollIntoView({ block: 'start' });
 }
 
 function goToPage(num) {
   if (!pdfDoc) return;
   num = Math.max(1, Math.min(pdfDoc.numPages, num));
-  renderPage(num);
-  container.scrollTop = 0;
+  const el = document.getElementById('page-' + num);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function updateActiveLinks(page) {
-  const allLinks = Array.from(document.querySelectorAll('[data-page]'));
-  allLinks.forEach(el => el.classList.remove('active'));
+  const all = Array.from(document.querySelectorAll('[data-page]'));
+  all.forEach(el => el.classList.remove('active'));
   let best = 0, bestEls = [];
-  allLinks.forEach(el => {
+  all.forEach(el => {
     const p = parseInt(el.dataset.page);
     if (p <= page) {
-      if (p > best)       { best = p; bestEls = [el]; }
-      else if (p === best)  bestEls.push(el);
+      if (p > best)        { best = p; bestEls = [el]; }
+      else if (p === best)   bestEls.push(el);
     }
   });
   bestEls.forEach(el => {
@@ -396,67 +397,88 @@ function updateActiveLinks(page) {
   });
 }
 
-function updateModeButtons() {
-  btnSingle.classList.toggle('active', !bookMode);
-  btnBook.classList.toggle('active',  bookMode);
-}
+// Track current page while scrolling
+let scrollTimer;
+container.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    const cRect = container.getBoundingClientRect();
+    const midY  = cRect.top + cRect.height / 3;
+    let found = 1;
+    wrapper.querySelectorAll('canvas').forEach(c => {
+      const r = c.getBoundingClientRect();
+      if (r.top <= midY) found = parseInt(c.dataset.pageNum);
+    });
+    if (found !== currentPage) {
+      currentPage = found;
+      pageInput.value = found;
+      history.replaceState(null, '', '#page=' + found);
+      updateActiveLinks(found);
+    }
+  }, 80);
+});
 
 // Load PDF
 pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
   pdfDoc = doc;
   pageInfo.textContent = '/ ' + doc.numPages;
   pageInput.max = doc.numPages;
+  btnSingle.classList.add('active');
   const hash = window.location.hash.match(/page=(\d+)/);
-  updateModeButtons();
-  goToPage(hash ? parseInt(hash[1]) : 1);
+  const start = hash ? parseInt(hash[1]) : 1;
+  currentPage = start;
+  pageInput.value = start;
+  initViewer(start);
 }).catch(err => {
-  container.innerHTML = '<p style="color:#f88;padding:20px;font-size:14px;">Kunne ikke indlæse PDF: ' + err.message + '</p>';
+  wrapper.innerHTML = '<p style="color:#f88;padding:20px;">Kunne ikke indlæse PDF: ' + err.message + '</p>';
 });
 
 // Navigation
-btnPrev.addEventListener('click', () => {
-  const step = bookMode && currentPage > 1 ? 2 : 1;
-  goToPage(currentPage - step);
-});
-btnNext.addEventListener('click', () => {
-  const step = bookMode ? 2 : 1;
-  goToPage(currentPage + step);
-});
+btnPrev.addEventListener('click', () => goToPage(currentPage - (bookMode ? 2 : 1)));
+btnNext.addEventListener('click', () => goToPage(currentPage + (bookMode ? 2 : 1)));
 pageInput.addEventListener('change', () => goToPage(parseInt(pageInput.value)));
 pageInput.addEventListener('keydown', e => { if (e.key === 'Enter') goToPage(parseInt(pageInput.value)); });
 
 document.addEventListener('keydown', e => {
   if (e.target === pageInput) return;
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') btnNext.click();
-  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   btnPrev.click();
+  if (e.key === 'ArrowDown'  || e.key === 'ArrowRight') goToPage(currentPage + (bookMode ? 2 : 1));
+  if (e.key === 'ArrowUp'    || e.key === 'ArrowLeft')  goToPage(currentPage - (bookMode ? 2 : 1));
 });
 
-// View mode toggle
+// View mode
 btnSingle.addEventListener('click', () => {
-  if (bookMode) { bookMode = false; updateModeButtons(); userScale = null; renderPage(currentPage); }
+  if (!bookMode) return;
+  bookMode = false;
+  btnSingle.classList.add('active'); btnBook.classList.remove('active');
+  userScale = null;
+  initViewer(currentPage);
 });
 btnBook.addEventListener('click', () => {
-  if (!bookMode) { bookMode = true; updateModeButtons(); userScale = null; renderPage(currentPage); }
+  if (bookMode) return;
+  bookMode = true;
+  btnBook.classList.add('active'); btnSingle.classList.remove('active');
+  userScale = null;
+  initViewer(currentPage);
 });
 
 // Zoom
 document.getElementById('btn-zoom-in').addEventListener('click', () => {
-  userScale = Math.min((userScale || parseFloat(zoomLabel.textContent) / 100) + 0.15, 3.0);
-  renderPage(currentPage);
+  userScale = Math.min((userScale || effectiveScale()) + 0.15, 4.0);
+  initViewer(currentPage);
 });
 document.getElementById('btn-zoom-out').addEventListener('click', () => {
-  userScale = Math.max((userScale || parseFloat(zoomLabel.textContent) / 100) - 0.15, 0.2);
-  renderPage(currentPage);
+  userScale = Math.max((userScale || effectiveScale()) - 0.15, 0.2);
+  initViewer(currentPage);
 });
 document.getElementById('btn-zoom-fit').addEventListener('click', () => {
-  userScale = null; renderPage(currentPage);
+  userScale = null; initViewer(currentPage);
 });
 
 // Resize
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => { if (pdfDoc && userScale === null) renderPage(currentPage); }, 200);
+  resizeTimer = setTimeout(() => { if (pdfDoc && userScale === null) initViewer(currentPage); }, 250);
 });
 </script>
 </body>
