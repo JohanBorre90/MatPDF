@@ -95,10 +95,31 @@
 
     .page-row { display: flex; gap: 4px; }
 
-    .page-row canvas {
+    .page-wrap {
+      position: relative;
+      display: inline-block;
+      line-height: 0;
+    }
+
+    .page-wrap canvas {
       display: block;
       box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-      background: #ccc; /* placeholder before render */
+      background: #ccc;
+    }
+
+    .ann-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+
+    .ann-link {
+      position: absolute;
+      pointer-events: all;
+      cursor: pointer;
+      /* Uncomment to debug link areas: */
+      /* background: rgba(0,100,255,0.15); */
     }
   </style>
 </head>
@@ -339,12 +360,15 @@ async function initViewer(scrollToPage) {
     const row = document.createElement('div');
     row.className = 'page-row';
     pages.forEach(num => {
+      const wrap = document.createElement('div');
+      wrap.className = 'page-wrap';
+      wrap.id = 'page-' + num;
       const c = document.createElement('canvas');
-      c.id = 'page-' + num;
       c.dataset.pageNum = num;
       c.width  = W;
       c.height = H;
-      row.appendChild(c);
+      wrap.appendChild(c);
+      row.appendChild(wrap);
     });
     wrapper.appendChild(row);
   });
@@ -357,11 +381,12 @@ async function initViewer(scrollToPage) {
       const num = parseInt(c.dataset.pageNum);
       if (rendered.has(num)) return;
       rendered.add(num);
-      pdfDoc.getPage(num).then(page => {
+      pdfDoc.getPage(num).then(async page => {
         const vp = page.getViewport({ scale: effectiveScale() });
         c.width  = Math.round(vp.width);
         c.height = Math.round(vp.height);
-        page.render({ canvasContext: c.getContext('2d'), viewport: vp });
+        await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+        renderAnnotations(c, page, vp);
       });
     });
   }, { root: container, rootMargin: '400px 0px' });
@@ -371,6 +396,58 @@ async function initViewer(scrollToPage) {
   // Scroll to requested page (instant on init)
   const el = document.getElementById('page-' + scrollToPage);
   if (el) el.scrollIntoView({ block: 'start' });
+}
+
+async function renderAnnotations(canvas, page, vp) {
+  const annotations = await page.getAnnotations();
+  const links = annotations.filter(a => a.subtype === 'Link');
+  if (links.length === 0) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'ann-overlay';
+
+  for (const ann of links) {
+    if (!ann.rect) continue;
+    const [x1, y1, x2, y2] = vp.convertToViewportRectangle(ann.rect);
+    const left   = Math.min(x1, x2);
+    const top    = Math.min(y1, y2);
+    const width  = Math.abs(x2 - x1);
+    const height = Math.abs(y2 - y1);
+
+    const el = document.createElement('a');
+    el.className = 'ann-link';
+    el.style.left   = left   + 'px';
+    el.style.top    = top    + 'px';
+    el.style.width  = width  + 'px';
+    el.style.height = height + 'px';
+
+    if (ann.url) {
+      el.href = ann.url;
+      el.target = '_blank';
+      el.rel = 'noopener';
+    } else {
+      el.href = '#';
+      const dest = ann.dest ?? ann.action?.dest;
+      if (dest) {
+        el.addEventListener('click', async e => {
+          e.preventDefault();
+          try {
+            const destArray = typeof dest === 'string'
+              ? await pdfDoc.getDestination(dest)
+              : dest;
+            if (destArray) {
+              const pageIndex = await pdfDoc.getPageIndex(destArray[0]);
+              goToPage(pageIndex + 1);
+            }
+          } catch (_) {}
+        });
+      }
+    }
+
+    overlay.appendChild(el);
+  }
+
+  canvas.parentElement.appendChild(overlay);
 }
 
 function goToPage(num) {
