@@ -112,10 +112,12 @@
     .textLayer {
       position: absolute;
       inset: 0;
-      overflow: hidden;
+      overflow: clip;
       line-height: 1;
       z-index: 1;
       -webkit-text-size-adjust: none;
+      forced-color-adjust: none;
+      transform-origin: 0 0;
     }
     .textLayer span, .textLayer br {
       color: transparent;
@@ -424,12 +426,26 @@ async function renderTextLayer(canvas, page, vp) {
   const textContent = await page.getTextContent();
   const textDiv = document.createElement('div');
   textDiv.className = 'textLayer';
+  textDiv.style.width  = canvas.width  + 'px';
+  textDiv.style.height = canvas.height + 'px';
   canvas.parentElement.appendChild(textDiv);
-  pdfjsLib.renderTextLayer({
+  const textDivs = [];
+  const textDivProperties = new WeakMap();
+  const renderTask = pdfjsLib.renderTextLayer({
     textContentSource: textContent,
     container: textDiv,
     viewport: vp,
-    textDivs: [],
+    textDivs,
+    textDivProperties,
+  });
+  if (renderTask?.promise) await renderTask.promise;
+  // Apply scaleX transforms so spans match visual text size
+  textDivs.forEach(div => {
+    const props = textDivProperties.get(div);
+    if (props?.scale !== undefined && props.scale !== 1) {
+      div.style.transform = (div.style.transform || '') +
+        ` scaleX(${props.scale})`;
+    }
   });
 }
 
