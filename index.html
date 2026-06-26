@@ -34,18 +34,27 @@
 
     .chapter-item { border-bottom: 1px solid #eee; }
     .chapter-link {
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex; align-items: center;
       padding: 7px 12px; cursor: pointer; font-size: 12px; font-weight: 600;
       color: #222; text-decoration: none; transition: background 0.1s; line-height: 1.35;
+      gap: 5px;
     }
     .chapter-link:hover  { background: #f0f0f0; }
     .chapter-link.active { background: #e8e8e8; }
-    .chapter-link .pg    { font-size: 11px; color: #aaa; font-weight: 400; margin-left: 8px; flex-shrink: 0; }
+    .chapter-toggle {
+      flex-shrink: 0; width: 14px; font-size: 9px; color: #888;
+      transition: transform 0.15s; display: inline-block; text-align: center;
+      cursor: pointer; padding: 2px;
+    }
+    .chapter-item.open .chapter-toggle { transform: rotate(90deg); }
+    .chapter-title { flex: 1; }
+    .chapter-link .pg { font-size: 11px; color: #aaa; font-weight: 400; margin-left: auto; flex-shrink: 0; }
 
-    .section-list { background: #fafafa; padding: 2px 0 3px; }
+    .section-list { background: #fafafa; padding: 2px 0 3px; display: none; }
+    .chapter-item.open .section-list { display: block; }
     .section-link {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 4px 12px 4px 22px; cursor: pointer; font-size: 11.5px;
+      padding: 4px 12px 4px 26px; cursor: pointer; font-size: 11.5px;
       color: #444; text-decoration: none; transition: background 0.1s; line-height: 1.35;
     }
     .section-link:hover  { background: #f0f0f0; }
@@ -299,12 +308,40 @@ const tocEl = document.getElementById('toc');
 toc.forEach(ch => {
   const item = document.createElement('div');
   item.className = 'chapter-item';
+
   const chLink = document.createElement('a');
   chLink.className = 'chapter-link';
   chLink.dataset.page = ch.page;
-  chLink.innerHTML = `<span>${ch.chapter}</span><span class="pg">s. ${ch.page}</span>`;
+
+  if (ch.sections.length > 0) {
+    const arrow = document.createElement('span');
+    arrow.className = 'chapter-toggle';
+    arrow.textContent = '▶';
+    arrow.addEventListener('click', e => {
+      e.preventDefault();
+      item.classList.toggle('open');
+    });
+    chLink.appendChild(arrow);
+  } else {
+    const spacer = document.createElement('span');
+    spacer.style.width = '14px';
+    spacer.style.flexShrink = '0';
+    chLink.appendChild(spacer);
+  }
+
+  const title = document.createElement('span');
+  title.className = 'chapter-title';
+  title.textContent = ch.chapter;
+  chLink.appendChild(title);
+
+  const pg = document.createElement('span');
+  pg.className = 'pg';
+  pg.textContent = 's. ' + ch.page;
+  chLink.appendChild(pg);
+
   chLink.addEventListener('click', e => { e.preventDefault(); goToPage(ch.page); });
   item.appendChild(chLink);
+
   if (ch.sections.length > 0) {
     const secList = document.createElement('div');
     secList.className = 'section-list';
@@ -521,6 +558,9 @@ function updateActiveLinks(page) {
   });
   bestEls.forEach(el => {
     el.classList.add('active');
+    // Auto-expand the parent chapter if a section is active
+    const item = el.closest('.chapter-item');
+    if (item) item.classList.add('open');
     el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   });
 }
