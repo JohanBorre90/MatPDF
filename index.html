@@ -536,8 +536,14 @@ pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
   pageInfo.textContent = '/ ' + doc.numPages;
   pageInput.max = doc.numPages;
   btnBook.classList.add('active');
-  const hash = window.location.hash.match(/page=(\d+)/);
-  const start = hash ? parseInt(hash[1]) : 1;
+  const hash = window.location.hash;
+  const pageMatch = hash.match(/page=(\d+)/);
+  const start = pageMatch ? parseInt(pageMatch[1]) : 1;
+  if (/single/.test(hash)) {
+    bookMode = false;
+    btnBook.classList.remove('active');
+    btnSingle.classList.add('active');
+  }
   currentPage = start;
   pageInput.value = start;
   initViewer(start);
