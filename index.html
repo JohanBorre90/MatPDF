@@ -286,7 +286,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 let pdfDoc      = null;
 let bookMode    = false;
-let userScale   = null;   // null = fit width
+let userScale   = 1.0;    // default 100%
 let baseScale   = 1;
 let currentPage = 1;
 let observer    = null;
@@ -471,7 +471,7 @@ document.getElementById('btn-zoom-out').addEventListener('click', () => {
   initViewer(currentPage);
 });
 document.getElementById('btn-zoom-fit').addEventListener('click', () => {
-  userScale = null; initViewer(currentPage);
+  userScale = null; initViewer(currentPage); // null = fit width
 });
 
 // Resize
