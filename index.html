@@ -35,25 +35,10 @@
       flex-shrink: 0;
     }
 
-    #sidebar-header h1 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #e0e0ff;
-      line-height: 1.3;
-    }
+    #sidebar-header h1 { font-size: 14px; font-weight: 700; color: #e0e0ff; line-height: 1.3; }
+    #sidebar-header p  { font-size: 11px; color: #8899bb; margin-top: 3px; }
 
-    #sidebar-header p {
-      font-size: 11px;
-      color: #8899bb;
-      margin-top: 3px;
-    }
-
-    #toc {
-      overflow-y: auto;
-      flex: 1;
-      padding: 8px 0;
-    }
-
+    #toc { overflow-y: auto; flex: 1; padding: 8px 0; }
     #toc::-webkit-scrollbar { width: 5px; }
     #toc::-webkit-scrollbar-track { background: #16213e; }
     #toc::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
@@ -61,115 +46,65 @@
     .chapter-item { border-bottom: 1px solid #1e2d50; }
 
     .chapter-link {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 14px;
-      cursor: pointer;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #aac4e8;
-      text-decoration: none;
-      transition: background 0.15s;
-      line-height: 1.35;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 14px; cursor: pointer; font-size: 12.5px; font-weight: 600;
+      color: #aac4e8; text-decoration: none; transition: background 0.15s; line-height: 1.35;
     }
-
-    .chapter-link:hover { background: #1e3a5f; color: #d0e8ff; }
+    .chapter-link:hover  { background: #1e3a5f; color: #d0e8ff; }
     .chapter-link.active { background: #1e3a5f; color: #7eb8f7; }
-
-    .chapter-link .pg { font-size: 11px; color: #5577aa; font-weight: 400; margin-left: 8px; flex-shrink: 0; }
+    .chapter-link .pg    { font-size: 11px; color: #5577aa; font-weight: 400; margin-left: 8px; flex-shrink: 0; }
     .chapter-link.active .pg { color: #5599cc; }
 
     .section-list { background: #111827; padding: 2px 0 4px; }
 
     .section-link {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px 14px 5px 24px;
-      cursor: pointer;
-      font-size: 11.5px;
-      color: #7799bb;
-      text-decoration: none;
-      transition: background 0.15s;
-      line-height: 1.35;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 14px 5px 24px; cursor: pointer; font-size: 11.5px;
+      color: #7799bb; text-decoration: none; transition: background 0.15s; line-height: 1.35;
     }
-
-    .section-link:hover { background: #1a2d48; color: #aac8e8; }
+    .section-link:hover  { background: #1a2d48; color: #aac8e8; }
     .section-link.active { background: #1a3050; color: #7eb8f7; }
-
-    .section-link .pg { font-size: 10.5px; color: #445566; font-weight: 400; margin-left: 8px; flex-shrink: 0; }
+    .section-link .pg    { font-size: 10.5px; color: #445566; font-weight: 400; margin-left: 8px; flex-shrink: 0; }
     .section-link.active .pg { color: #5588aa; }
 
     /* VIEWER */
-    #viewer {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: #111;
-      min-width: 0;
-    }
+    #viewer { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #111; min-width: 0; }
 
     #toolbar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 14px;
-      background: #0f0f1a;
-      border-bottom: 1px solid #222;
-      flex-shrink: 0;
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 14px; background: #0f0f1a; border-bottom: 1px solid #222; flex-shrink: 0;
     }
 
     #toolbar button {
-      background: #1e3a5f;
-      border: 1px solid #2a4f7a;
-      color: #aac4e8;
-      padding: 5px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 13px;
-      transition: background 0.15s;
+      background: #1e3a5f; border: 1px solid #2a4f7a; color: #aac4e8;
+      padding: 5px 11px; border-radius: 4px; cursor: pointer; font-size: 13px;
+      transition: background 0.15s; white-space: nowrap;
     }
-
     #toolbar button:hover:not(:disabled) { background: #2a5080; color: #d0e8ff; }
     #toolbar button:disabled { opacity: 0.35; cursor: default; }
+    #toolbar button.active { background: #1a5a9f; border-color: #3a8fdf; color: #d0e8ff; }
 
     #toolbar input[type=number] {
-      width: 52px;
-      background: #1a1a2e;
-      border: 1px solid #2a4f7a;
-      color: #d0e0ff;
-      padding: 5px 7px;
-      border-radius: 4px;
-      font-size: 13px;
-      text-align: center;
+      width: 52px; background: #1a1a2e; border: 1px solid #2a4f7a;
+      color: #d0e0ff; padding: 5px 7px; border-radius: 4px; font-size: 13px; text-align: center;
     }
 
     #page-info { font-size: 13px; color: #5577aa; }
-
+    #toolbar .sep { width: 1px; background: #2a4f7a; align-self: stretch; margin: 0 2px; }
     #zoom-controls { margin-left: auto; display: flex; align-items: center; gap: 6px; }
     #zoom-controls button { padding: 5px 9px; font-size: 14px; font-weight: bold; }
     #zoom-label { font-size: 12px; color: #7799bb; min-width: 42px; text-align: center; }
 
     #canvas-container {
-      flex: 1;
-      overflow: auto;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 16px;
-      background: #666;
+      flex: 1; overflow: auto; display: flex;
+      justify-content: center; align-items: flex-start;
+      padding: 16px; background: #666;
     }
-
     #canvas-container::-webkit-scrollbar { width: 8px; height: 8px; }
     #canvas-container::-webkit-scrollbar-track { background: #555; }
     #canvas-container::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
 
-    #pdf-canvas {
-      display: block;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-    }
+    #pdf-canvas { display: block; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
   </style>
 </head>
 <body>
@@ -188,6 +123,9 @@
     <button id="btn-next">Næste &#8594;</button>
     <input type="number" id="page-input" min="1" value="1">
     <span id="page-info">/ –</span>
+    <div class="sep"></div>
+    <button id="btn-single">Enkeltside</button>
+    <button id="btn-book">Bogvisning</button>
     <div id="zoom-controls">
       <button id="btn-zoom-out">&#8722;</button>
       <span id="zoom-label">100%</span>
@@ -354,54 +292,84 @@ toc.forEach(ch => {
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-let pdfDoc = null;
+let pdfDoc    = null;
 let currentPage = 1;
+let bookMode  = false;
 let userScale = null; // null = auto fit
 let rendering = false;
 let pendingPage = null;
 
-const canvas = document.getElementById('pdf-canvas');
-const ctx = canvas.getContext('2d');
+const canvas    = document.getElementById('pdf-canvas');
+const ctx       = canvas.getContext('2d');
 const container = document.getElementById('canvas-container');
 const pageInput = document.getElementById('page-input');
-const pageInfo = document.getElementById('page-info');
+const pageInfo  = document.getElementById('page-info');
 const zoomLabel = document.getElementById('zoom-label');
-const btnPrev = document.getElementById('btn-prev');
-const btnNext = document.getElementById('btn-next');
+const btnPrev   = document.getElementById('btn-prev');
+const btnNext   = document.getElementById('btn-next');
+const btnSingle = document.getElementById('btn-single');
+const btnBook   = document.getElementById('btn-book');
 
-function getFitScale(viewport) {
-  const availW = container.clientWidth - 32;
-  const availH = container.clientHeight - 32;
-  return Math.min(availW / viewport.width, availH / viewport.height);
+// In book mode, snap to the start of a spread: page 1 alone, then 2-3, 4-5 ...
+function spreadStart(n) {
+  if (!bookMode || n <= 1) return n;
+  return n % 2 === 0 ? n : n - 1; // even pages start a spread
 }
 
-function renderPage(num) {
+async function renderPage(num) {
   if (rendering) { pendingPage = num; return; }
   rendering = true;
 
-  pdfDoc.getPage(num).then(page => {
-    const base = page.getViewport({ scale: 1 });
-    const scale = userScale !== null ? userScale : getFitScale(base);
-    const vp = page.getViewport({ scale });
-
-    canvas.width = vp.width;
-    canvas.height = vp.height;
-
-    page.render({ canvasContext: ctx, viewport: vp }).promise.then(() => {
-      rendering = false;
-      zoomLabel.textContent = Math.round(scale * 100) + '%';
-      if (pendingPage !== null) {
-        const p = pendingPage; pendingPage = null; renderPage(p);
-      }
-    });
-  });
-
+  num = spreadStart(num);
   currentPage = num;
   pageInput.value = num;
   btnPrev.disabled = num <= 1;
-  btnNext.disabled = num >= (pdfDoc ? pdfDoc.numPages : 1);
   history.replaceState(null, '', '#page=' + num);
   updateActiveLinks(num);
+
+  const page1 = await pdfDoc.getPage(num);
+  const base  = page1.getViewport({ scale: 1 });
+
+  const showTwo = bookMode && num + 1 <= pdfDoc.numPages;
+  const page2   = showTwo ? await pdfDoc.getPage(num + 1) : null;
+
+  const totalW = base.width * (showTwo ? 2 : 1);
+  const availW = container.clientWidth  - 32;
+  const availH = container.clientHeight - 32;
+  const scale  = userScale !== null
+    ? userScale
+    : Math.min(availW / totalW, availH / base.height);
+
+  const vp1 = page1.getViewport({ scale });
+  canvas.width  = showTwo ? Math.round(vp1.width * 2) : vp1.width;
+  canvas.height = vp1.height;
+
+  // Clear canvas (gap between pages in book mode)
+  ctx.fillStyle = '#888';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  await page1.render({ canvasContext: ctx, viewport: vp1 }).promise;
+
+  if (page2) {
+    const vp2 = page2.getViewport({ scale });
+    // Render page2 to offscreen canvas, then draw onto main canvas
+    const off = document.createElement('canvas');
+    off.width  = vp2.width;
+    off.height = vp2.height;
+    await page2.render({ canvasContext: off.getContext('2d'), viewport: vp2 }).promise;
+    ctx.drawImage(off, vp1.width, 0);
+  }
+
+  btnNext.disabled = bookMode
+    ? num + (showTwo ? 2 : 1) > pdfDoc.numPages
+    : num >= pdfDoc.numPages;
+
+  zoomLabel.textContent = Math.round(scale * 100) + '%';
+  rendering = false;
+
+  if (pendingPage !== null) {
+    const p = pendingPage; pendingPage = null; renderPage(p);
+  }
 }
 
 function goToPage(num) {
@@ -414,13 +382,12 @@ function goToPage(num) {
 function updateActiveLinks(page) {
   const allLinks = Array.from(document.querySelectorAll('[data-page]'));
   allLinks.forEach(el => el.classList.remove('active'));
-  let best = 0;
-  let bestEls = [];
+  let best = 0, bestEls = [];
   allLinks.forEach(el => {
     const p = parseInt(el.dataset.page);
     if (p <= page) {
-      if (p > best) { best = p; bestEls = [el]; }
-      else if (p === best) bestEls.push(el);
+      if (p > best)       { best = p; bestEls = [el]; }
+      else if (p === best)  bestEls.push(el);
     }
   });
   bestEls.forEach(el => {
@@ -429,52 +396,67 @@ function updateActiveLinks(page) {
   });
 }
 
+function updateModeButtons() {
+  btnSingle.classList.toggle('active', !bookMode);
+  btnBook.classList.toggle('active',  bookMode);
+}
+
 // Load PDF
 pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
   pdfDoc = doc;
   pageInfo.textContent = '/ ' + doc.numPages;
   pageInput.max = doc.numPages;
   const hash = window.location.hash.match(/page=(\d+)/);
+  updateModeButtons();
   goToPage(hash ? parseInt(hash[1]) : 1);
 }).catch(err => {
   container.innerHTML = '<p style="color:#f88;padding:20px;font-size:14px;">Kunne ikke indlæse PDF: ' + err.message + '</p>';
 });
 
 // Navigation
-btnPrev.addEventListener('click', () => goToPage(currentPage - 1));
-btnNext.addEventListener('click', () => goToPage(currentPage + 1));
+btnPrev.addEventListener('click', () => {
+  const step = bookMode && currentPage > 1 ? 2 : 1;
+  goToPage(currentPage - step);
+});
+btnNext.addEventListener('click', () => {
+  const step = bookMode ? 2 : 1;
+  goToPage(currentPage + step);
+});
 pageInput.addEventListener('change', () => goToPage(parseInt(pageInput.value)));
 pageInput.addEventListener('keydown', e => { if (e.key === 'Enter') goToPage(parseInt(pageInput.value)); });
 
 document.addEventListener('keydown', e => {
   if (e.target === pageInput) return;
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goToPage(currentPage + 1);
-  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goToPage(currentPage - 1);
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') btnNext.click();
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   btnPrev.click();
+});
+
+// View mode toggle
+btnSingle.addEventListener('click', () => {
+  if (bookMode) { bookMode = false; updateModeButtons(); userScale = null; renderPage(currentPage); }
+});
+btnBook.addEventListener('click', () => {
+  if (!bookMode) { bookMode = true; updateModeButtons(); userScale = null; renderPage(currentPage); }
 });
 
 // Zoom
 document.getElementById('btn-zoom-in').addEventListener('click', () => {
-  const base = userScale !== null ? userScale : parseFloat(zoomLabel.textContent) / 100;
-  userScale = Math.min(base + 0.15, 3.0);
+  userScale = Math.min((userScale || parseFloat(zoomLabel.textContent) / 100) + 0.15, 3.0);
   renderPage(currentPage);
 });
 document.getElementById('btn-zoom-out').addEventListener('click', () => {
-  const base = userScale !== null ? userScale : parseFloat(zoomLabel.textContent) / 100;
-  userScale = Math.max(base - 0.15, 0.3);
+  userScale = Math.max((userScale || parseFloat(zoomLabel.textContent) / 100) - 0.15, 0.2);
   renderPage(currentPage);
 });
 document.getElementById('btn-zoom-fit').addEventListener('click', () => {
-  userScale = null;
-  renderPage(currentPage);
+  userScale = null; renderPage(currentPage);
 });
 
 // Resize
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    if (pdfDoc && userScale === null) renderPage(currentPage);
-  }, 200);
+  resizeTimer = setTimeout(() => { if (pdfDoc && userScale === null) renderPage(currentPage); }, 200);
 });
 </script>
 </body>
